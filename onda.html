@@ -1,0 +1,1307 @@
+<?php session_start();?>
+<!DOCTYPE html>
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ONDA LAAYOUNE</title>
+    <link rel="stylesheet" href="onda-style.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+
+<body>
+    <!-- navbar sections starts  -->
+    <header class="header">
+        <div class="logo">
+            <img src="images/Logo-ONDA__1_-removebg-preview.png" width="100" height="60" alt="logo-bookmark">
+        </div>
+
+        <nav class="navbar">
+            <a href="#home">Accueil</a>
+            <a href="#about">À propos</a>
+            <a href="#Services">Services</a>
+            <a href="#footer">Contact</a>
+            <a href="#" class="loginbtn" ><button onclick="showFormy()">Postuler</button></a>
+            <a href="login.php" class="loginbtn" ><button onclick="showForm()">login</button></a>
+        </nav>
+       
+        <div class="fas fa-bars" id="menu-btn"></div>
+    </header>
+    <!-- navbar sections starts  -->
+
+    
+    <!-- home section stars  -->
+
+    <section class="home" id="home">
+        <div class="content">
+            <h1>Un ciel de possibilités, un monde à explorer.</h1>
+            <br><br><br><br>
+            <p>- office national des aéroports -</p>
+
+            <a href="#about" class="home-btn">Lire la suite</a>
+        </div>
+
+
+        <div class="wrapper">
+            <i id="left" class="fa fa-arrow-left"></i>
+            <ul class="carousel">
+              <li class="card">
+                <div class="img"><img src="images/315107257_446913434260453_1380012904552898640_n.jpg" alt="img" draggable="false"></div>
+              </li>
+              <li class="card">
+                <div class="img"><img src="images/345218288_469108432066131_3756876072927811631_n.jpg" alt="img" draggable="false"></div>
+              </li>
+              <li class="card">
+                <div class="img"><img src="images/326756393_703441654829511_7408751229767034815_n.jpg" alt="img" draggable="false"></div>
+              </li>
+              <li class="card">
+                <div class="img"><img src="images/343932928_6356824957671105_3873335743742369435_n.jpg" alt="img" draggable="false"></div>
+              </li>
+              <li class="card">
+                <div class="img"><img src="images/345218288_469108432066131_3756876072927811631_n.jpg" alt="img" draggable="false"></div>
+              </li>
+            </ul>
+            <i id="right" class="fa fa-arrow-right"></i>
+          </div>
+    </section>
+    <script>
+                const wrapper = document.querySelector(".wrapper");
+                const carousel = document.querySelector(".carousel");
+                const firstCardWidth = carousel.querySelector(".card").offsetWidth;
+                const arrowBtns = document.querySelectorAll(".wrapper i");
+                const carouselChildrens = [...carousel.children];
+                let isDragging = false, isAutoPlay = true, startX, startScrollLeft, timeoutId;
+                // Get the number of cards that can fit in the carousel at once
+                let cardPerView = Math.round(carousel.offsetWidth / firstCardWidth);
+                // Insert copies of the last few cards to beginning of carousel for infinite scrolling
+                carouselChildrens.slice(-cardPerView).reverse().forEach(card => {
+                    carousel.insertAdjacentHTML("afterbegin", card.outerHTML);
+                });
+                // Insert copies of the first few cards to end of carousel for infinite scrolling
+                carouselChildrens.slice(0, cardPerView).forEach(card => {
+                    carousel.insertAdjacentHTML("beforeend", card.outerHTML);
+                });
+                // Scroll the carousel at appropriate postition to hide first few duplicate cards on Firefox
+                carousel.classList.add("no-transition");
+                carousel.scrollLeft = carousel.offsetWidth;
+                carousel.classList.remove("no-transition");
+                // Add event listeners for the arrow buttons to scroll the carousel left and right
+                arrowBtns.forEach(btn => {
+                    btn.addEventListener("click", () => {
+                        carousel.scrollLeft += btn.id == "left" ? -firstCardWidth : firstCardWidth;
+                    });
+                });
+                const dragStart = (e) => {
+                    isDragging = true;
+                    carousel.classList.add("dragging");
+                    // Records the initial cursor and scroll position of the carousel
+                    startX = e.pageX;
+                    startScrollLeft = carousel.scrollLeft;
+                }
+                const dragging = (e) => {
+                    if(!isDragging) return; // if isDragging is false return from here
+                    // Updates the scroll position of the carousel based on the cursor movement
+                    carousel.scrollLeft = startScrollLeft - (e.pageX - startX);
+                }
+                const dragStop = () => {
+                    isDragging = false;
+                    carousel.classList.remove("dragging");
+                }
+                const infiniteScroll = () => {
+                    // If the carousel is at the beginning, scroll to the end
+                    if(carousel.scrollLeft === 0) {
+                        carousel.classList.add("no-transition");
+                        carousel.scrollLeft = carousel.scrollWidth - (2 * carousel.offsetWidth);
+                        carousel.classList.remove("no-transition");
+                    }
+                    // If the carousel is at the end, scroll to the beginning
+                    else if(Math.ceil(carousel.scrollLeft) === carousel.scrollWidth - carousel.offsetWidth) {
+                        carousel.classList.add("no-transition");
+                        carousel.scrollLeft = carousel.offsetWidth;
+                        carousel.classList.remove("no-transition");
+                    }
+                    // Clear existing timeout & start autoplay if mouse is not hovering over carousel
+                    clearTimeout(timeoutId);
+                    if(!wrapper.matches(":hover")) autoPlay();
+                }
+                const autoPlay = () => {
+                    if(window.innerWidth < 800 || !isAutoPlay) return; // Return if window is smaller than 800 or isAutoPlay is false
+                    // Autoplay the carousel after every 2500 ms
+                    timeoutId = setTimeout(() => carousel.scrollLeft += firstCardWidth, 2500);
+                }
+                autoPlay();
+                carousel.addEventListener("mousedown", dragStart);
+                carousel.addEventListener("mousemove", dragging);
+                document.addEventListener("mouseup", dragStop);
+                carousel.addEventListener("scroll", infiniteScroll);
+                wrapper.addEventListener("mouseenter", () => clearTimeout(timeoutId));
+                wrapper.addEventListener("mouseleave", autoPlay);
+    </script>
+    <!-- about sectin starts  -->
+
+    <section class="about" id="about"><br><br>
+        <div class="heading">
+            <h1>À propos</h1>
+            <p><p>L’Office National des Aéroports (O.N.D.A) est un établissement semipublic à caractère industriel et commercial, doté de la personnalité morale et de
+                l’autonomie financière. Il est soumis à la tutelle technique du Ministère du
+                Tourisme, du Transport Aérien, de l’Artisanat et de l’économie sociale.
+                <br>
+                <>Cet organisme est créé, en vue de répondre aux nouveaux impératifs
+                d’exploitation et de gestion, au regard de la complexité des équipements
+                techniques et des innovations introduites dans le secteur aéronautique
+                <br>
+                Chaque établissement réalise des missions, et comme l’ONDA n’en fait pas
+                exception, il a plusieurs responsabilités. Les missions de l’office national des
+                aéroports se résument essentiellement dans les missions suivantes :
+                <br>
+                • La garantie de la sécurité de la navigation aérienne au niveau des aéroports
+                et de l’espace aérien sous juridiction nationale.
+                <br>
+                • L’aménagement, l’exploitation, l’entretien et le développement des
+                aéroports civils de l’Etat.
+                <br>
+                • L’embarquement, le débarquement, le transit et l’acheminement à terre
+                des voyageurs, des marchandises et du courrier transporté par air, ainsi que
+                tout service destiné à la satisfaction des besoins des usagers et du public.
+                <br>
+                • La liaison avec les organismes et les aéroports internationaux afin de
+                répondre aux besoins du trafic aérien.
+                <br>
+                • La formation des ingénieurs de l’aéronautique civile, des contrôleurs et
+                des électroniciens de la sécurité aérienne.
+                <br>
+                Pour mieux accomplir ses responsabilités, l’ONDA a des missions dont
+                l’objectif est de répondre à un certain nombre d’exigences, et celles-ci sont :
+                <br>
+                • La garantie d’une qualité de service dans les prestations rendues aux
+                compagnies et aux passagers, conformément aux normes internationales.
+                <br>
+                • Le développement continu des ressources nécessaires pour répondre au
+                développement technologique permanent du secteur.
+                <br>
+                • Le développement du secteur pour répondre aux besoins de croissance du
+                transport aérien.</p>
+                </p>
+                
+        </div>
+    </section>
+    
+    <section class="Services" id="Services">
+        <div class="heading">
+            <h1>Services</h1>
+            <p>L’Aéroport Laâyoune-Hassan 1er est présidé par un commandant
+                d’aéroport, celui-ci coopère avec les chefs des quatre services : « Responsable
+                SGS », « Gestion Personnel et secrétariat » « Activités Sociales » et « Ressources
+                et Activités Concédées », dans le but de prendre les décisions relatives à
+                l’aéroport et de définir les grandes lignes de la gestion et de l’exploitation
+                aéroportuaire.<br> Il coopère ainsi avec les différentes divisions installées au sein de
+                l’aéroport à savoir : « Division Technique », « Division Navigation Aérienne »,
+                « Division Exploitation » et « Service QSSE ».</p>
+        </div>
+
+    <!-- home section ends -->
+
+    <script>
+      function showForm() {
+        var form = document.getElementById("myForm");
+        form.style.display = "block"; /* Show the form */
+      }
+    </script>
+    <form action="" enctype="multipart/form-data" method="POST">
+      <div id='myFormy'class='signin-page'>
+          <div class="container">
+                 <div class="title">Inscription</div>
+                   <div class="content">
+                      <form id='signin' class='input-group-signin' >
+                         <div class="input-box"> 
+                                <p> you have an account? </p>
+                                <label for="nom">Nom  :</label>
+                                
+                                <input  type="text" name="nom" required="required" >
+                         </div>
+                         <br>
+                         <div class="input-box"> 
+                                <label for="nom">Prenom  :</label>
+                                
+                                <input  type="text" name="prenom" required="required" >
+                         </div>
+                         <br>
+                         <div class="input-box"> 
+                                <label for="nom">CIN  :</label>
+                                <input  type="text" name="cin" required="required" >
+                         </div>
+                         <br>
+                         <div class="input-box"> 
+                                <label for="nom">Date de naissance  :</label>
+                                <input  type="date" name="dn" required="required" >
+                         </div>
+                         <br> 
+                         <div class="combo-box">
+                                 <label for="nom">Pays  :</label>
+                                    <select name="pays" class="select-box">
+                                                <option value=""></option>
+                                                
+                                                <option value="AFGHANISTAN"> AFGHANISTAN</option>
+                                                
+                                                <option value="AFRIQUE DU SUD"> AFRIQUE DU SUD</option>
+                                                
+                                                <option value="ALBANIE"> ALBANIE</option>
+                                                
+                                                <option value="ALGERIE"> ALGERIE</option>
+                                                
+                                                <option value="ALLEMAGNE"> ALLEMAGNE</option>
+                                                
+                                                <option value="ANDORRE"> ANDORRE</option>
+                                                
+                                                <option value="ANGOLA"> ANGOLA</option>
+                                                
+                                                <option value="ARABIE SAOUDITE"> ARABIE SAOUDITE</option>
+                                                
+                                                <option value="ARGENTINE"> ARGENTINE</option>
+                                                
+                                                <option value="AUSTRALIE"> AUSTRALIE</option>
+                                                
+                                                <option value="AUTRICHE"> AUTRICHE</option>
+                                                
+                                                <option value="BAHAMAS"> BAHAMAS</option>
+                                                
+                                                <option value="BAHREIN"> BAHREIN</option>
+                                                
+                                                <option value="BANGLADESH"> BANGLADESH</option>
+                                                
+                                                <option value="BELGIQUE"> BELGIQUE</option>
+                                                
+                                                <option value="BOLIVIE"> BOLIVIE</option>
+                                                
+                                                <option value="BRESIL"> BRESIL</option>
+                                                
+                                                <option value="BRUNEI"> BRUNEI</option>
+                                                
+                                                <option value="BULGARIE"> BULGARIE</option>
+                                                
+                                                <option value="BURKINA FASO"> BURKINA FASO</option>
+                                                
+                                                <option value="BURUNDI"> BURUNDI</option>
+                                                
+                                                <option value="CAMEROUN"> CAMEROUN</option>
+                                                
+                                                <option value="CANADA"> CANADA</option>
+                                                
+                                                <option value="CAP-VERT"> CAP-VERT</option>
+                                                
+                                                <option value="CENTRAFRIQUE"> CENTRAFRIQUE</option>
+                                                
+                                                <option value="CHILI"> CHILI</option>
+                                                
+                                                <option value="CHINE"> CHINE</option>
+                                                
+                                                <option value="CHYPRE"> CHYPRE</option>
+                                                
+                                                <option value="COLOMBIE"> COLOMBIE</option>
+                                                
+                                                <option value="COMORES"> COMORES</option>
+                                                
+                                                <option value="CONGO"> CONGO</option>
+                                                
+                                                <option value="COREE DU NORD"> COREE DU NORD</option>
+                                                
+                                                <option value="COREE DU SUD"> COREE DU SUD</option>
+                                                
+                                                <option value="COSTA RICA"> COSTA RICA</option>
+                                                
+                                                <option value="COTE D'IVOIRE"> COTE D'IVOIRE</option>
+                                                
+                                                <option value="CUBA"> CUBA</option>
+                                                
+                                                <option value="DANEMARK"> DANEMARK</option>
+                                                
+                                                <option value="DJIBOUTI"> DJIBOUTI</option>
+                                                
+                                                <option value="DOMINICAINE"> DOMINICAINE</option>
+                                                
+                                                <option value="DOMINIQUE"> DOMINIQUE</option>
+                                                
+                                                <option value="EGYPTE"> EGYPTE</option>
+                                                
+                                                <option value="EMIRATS ARABES UNIS"> EMIRATS ARABES UNIS</option>
+                                                
+                                                <option value="EQUATEUR"> EQUATEUR</option>
+                                                
+                                                <option value="ESPAGNE"> ESPAGNE</option>
+                                                
+                                                <option value="ETATS-UNIS"> ETATS-UNIS</option>
+                                                
+                                                <option value="ETHIOPIE"> ETHIOPIE</option>
+                                                
+                                                <option value="FINLANDE"> FINLANDE</option>
+                                                
+                                                <option value="FRANCE"> FRANCE</option>
+                                                
+                                                <option value="GABON"> GABON</option>
+                                                
+                                                <option value="GAMBIE"> GAMBIE</option>
+                                                
+                                                <option value="GHANA"> GHANA</option>
+                                                
+                                                <option value="GIBRALTAR"> GIBRALTAR</option>
+                                                
+                                                <option value="GRECE"> GRECE</option>
+                                                
+                                                <option value="GRENADE"> GRENADE</option>
+                                                
+                                                <option value="GROENLAND"> GROENLAND</option>
+                                                
+                                                <option value="GUAM"> GUAM</option>
+                                                
+                                                <option value="GUATEMALA"> GUATEMALA</option>
+                                                
+                                                <option value="GUINEE"> GUINEE</option>
+                                                
+                                                <option value="GUINEE EQUATORIALE"> GUINEE EQUATORIALE</option>
+                                                
+                                                <option value="GUINEE-BISSAU"> GUINEE-BISSAU</option>
+                                                
+                                                <option value="GUYANA"> GUYANA</option>
+                                                
+                                                <option value="GUYANE FRANCAISE"> GUYANE FRANCAISE</option>
+                                                
+                                                <option value="HAITI"> HAITI</option>
+                                                
+                                                <option value="HONDURAS"> HONDURAS</option>
+                                                
+                                                <option value="HONG KONG"> HONG KONG</option>
+                                                
+                                                <option value="HONGRIE"> HONGRIE</option>
+                                                
+                                                <option value="INDE"> INDE</option>
+                                                
+                                                <option value="INDONESIE"> INDONESIE</option>
+                                                
+                                                <option value="IRAK"> IRAK</option>
+                                                
+                                                <option value="IRAN"> IRAN</option>
+                                                
+                                                <option value="IRLANDE"> IRLANDE</option>
+                                                
+                                                <option value="ISLANDE"> ISLANDE</option>
+                                                
+                                                <option value="ISRAEL"> ISRAEL</option>
+                                                
+                                                <option value="ITALIE"> ITALIE</option>
+                                                
+                                                <option value="JAMAIQUE"> JAMAIQUE</option>
+                                                
+                                                <option value="JAPON"> JAPON</option>
+                                                
+                                                <option value="JORDANIE"> JORDANIE</option>
+                                                
+                                                <option value="KENYA"> KENYA</option>
+                                                
+                                                <option value="KOWEIT"> KOWEIT</option>
+                                                
+                                                <option value="LAOS"> LAOS</option>
+                                                
+                                                <option value="LIBAN"> LIBAN</option>
+                                                
+                                                <option value="LIBERIA"> LIBERIA</option>
+                                                
+                                                <option value="LIBYE"> LIBYE</option>
+                                                
+                                                <option value="LUXEMBOURG"> LUXEMBOURG</option>
+                                                
+                                                <option value="MACAO"> MACAO</option>
+                                                
+                                                <option value="MADAGASCAR"> MADAGASCAR</option>
+                                                
+                                                <option value="MALAISIE"> MALAISIE</option>
+                                                
+                                                <option value="MALAWI"> MALAWI</option>
+                                                
+                                                <option value="MALDIVES"> MALDIVES</option>
+                                                
+                                                <option value="MALI"> MALI</option>
+                                                
+                                                <option value="MALTE"> MALTE</option>
+                                                
+                                                <option value="MAROC"> MAROC</option>
+                                                
+                                                <option value="MARTINIQUE"> MARTINIQUE</option>
+                                                
+                                                <option value="MAURICE"> MAURICE</option>
+                                                
+                                                <option value="MAURITANIE"> MAURITANIE</option>
+                                                
+                                                <option value="MAYOTTE"> MAYOTTE</option>
+                                                
+                                                <option value="MEXIQUE"> MEXIQUE</option>
+                                                
+                                                <option value="MONACO"> MONACO</option>
+                                                
+                                                <option value="MONGOLIE"> MONGOLIE</option>
+                                                
+                                                <option value="MOZAMBIQUE"> MOZAMBIQUE</option>
+                                                
+                                                <option value="NAMIBIE"> NAMIBIE</option>
+                                                
+                                                <option value="NIGER"> NIGER</option>
+                                                
+                                                <option value="NIGERIA"> NIGERIA</option>
+                                                
+                                                <option value="NORVEGE"> NORVEGE</option>
+                                                
+                                                <option value="NOUVELLE-CALEDONIE"> NOUVELLE-CALEDONIE</option>
+                                                
+                                                <option value="NOUVELLE-ZELANDE"> NOUVELLE-ZELANDE</option>
+                                                
+                                                <option value="OMAN"> OMAN</option>
+                                                
+                                                <option value="OUGANDA"> OUGANDA</option>
+                                                
+                                                <option value="PAKISTAN"> PAKISTAN</option>
+                                                
+                                                <option value="PANAMA"> PANAMA</option>
+                                                
+                                                <option value="PARAGUAY"> PARAGUAY</option>
+                                                
+                                                <option value="PAYS-BAS"> PAYS-BAS</option>
+                                                
+                                                <option value="PEROU"> PEROU</option>
+                                                
+                                                <option value="PHILIPPINES"> PHILIPPINES</option>
+                                                
+                                                <option value="PITCAIRN"> PITCAIRN</option>
+                                                
+                                                <option value="POLOGNE"> POLOGNE</option>
+                                                
+                                                <option value="POLYNESIE FRANCAISE"> POLYNESIE FRANCAISE</option>
+                                                
+                                                <option value="PORTO RICO"> PORTO RICO</option>
+                                                
+                                                <option value="PORTUGAL"> PORTUGAL</option>
+                                                
+                                                <option value="QATAR"> QATAR</option>
+                                                
+                                                <option value="REUNION"> REUNION</option>
+                                                
+                                                <option value="ROUMANIE"> ROUMANIE</option>
+                                                
+                                                <option value="ROYAUME-UNI"> ROYAUME-UNI</option>
+                                                
+                                                <option value="RWANDA"> RWANDA</option>
+                                                
+                                                <option value="SENEGAL"> SENEGAL</option>
+                                                
+                                                <option value="SIERRA LEONE"> SIERRA LEONE</option>
+                                                
+                                                <option value="SINGAPOUR"> SINGAPOUR</option>
+                                                
+                                                <option value="SOMALIE"> SOMALIE</option>
+                                                
+                                                <option value="SOUDAN"> SOUDAN</option>
+                                                
+                                                <option value="SRI LANKA"> SRI LANKA</option>
+                                                
+                                                <option value="SUEDE"> SUEDE</option>
+                                                
+                                                <option value="SUISSE"> SUISSE</option>
+                                                
+                                                <option value="SURINAME"> SURINAME</option>
+                                                
+                                                <option value="SYRIE"> SYRIE</option>
+                                                
+                                                <option value="TANZANIE"> TANZANIE</option>
+                                                
+                                                <option value="TCHAD"> TCHAD</option>
+                                                
+                                                <option value="TCHECOSLOVAQUIE"> TCHECOSLOVAQUIE</option>
+                                                
+                                                <option value="THAILANDE"> THAILANDE</option>
+                                                
+                                                <option value="TOGO"> TOGO</option>
+                                                
+                                                <option value="TUNISIE"> TUNISIE</option>
+                                                
+                                                <option value="TURKS-CAICOS"> TURKS-CAICOS</option>
+                                                
+                                                <option value="TURQUIE"> TURQUIE</option>
+                                                
+                                                <option value="RUSSIA"> RUSSIA</option>
+                                                
+                                                <option value="URUGUAY"> URUGUAY</option>
+                                                
+                                                <option value="VENEZUELA"> VENEZUELA</option>
+                                                
+                                                <option value="VIETNAM"> VIETNAM</option>
+                                                
+                                                <option value="YEMEN"> YEMEN</option>
+                                                
+                                                <option value="YOUGOSLAVIE"> YOUGOSLAVIE</option>
+                                                
+                                                <option value="ZAIRE"> ZAIRE</option>
+                                                
+                                                <option value="ZAMBIE"> ZAMBIE</option>
+                                                
+                                                <option value="ZIMBABWE"> ZIMBABWE</option>
+                                    </select>
+                         </div>
+                         <br>
+                         <div class="input-box"> 
+                                 <label for="nom">Ville  :</label>
+                                 <input  type="text" name="ville" required="required" >
+                         </div>
+                         <br>
+                         <div class="input-box">
+                                 <label for="nom">Tel  :</label> 
+                                 <input  type="text" name="tel" required="required" >
+                         </div>
+                         <br>
+                         <div class="input-box"> 
+                                 <label for="nom">Email  :</label>
+                                 <input  type="text" name="email" required="required" >
+                         </div>
+                         <br>
+                         <div class="combo-box"> 
+                                 <label for="nom">Nom de l'&eacute;tablissement  :</label>
+                                    <select name="nomecole" class="select-box">
+                                        <option > ACADEMIE INTERNATIONAL Med VI DE L'AVIATION CIVILE</option>
+  
+                                        <option > CENTRE DE PERFECTIONNEMENT TECHNIQUE KENITRA</option>
+                                        
+                                        <option > CENTRE DE QUALIFICATION DHAR LAMHALA</option>
+                                        
+                                        <option > DE QUALIFICATION ET INTEGRATION SOCIALE</option>
+                                        
+                                        <option > COLLEGE DE SHERBROOKE MAROC</option>
+                                        
+                                        <option > ECOLE DES HAUTES ETUDES PROFESSIONNELLES</option>
+                                        
+                                        <option > ECOLE POLYTECHNIQUE DE CASA</option>
+                                        
+                                        <option > ECOLE POLYTECHNIQUE DE SAFI</option>
+                                        
+                                        <option > ECOLE POLYTECHNIQUE  PRIVE D'AGADIR</option>
+                                        
+                                        <option > ECOLE SUPERIEUR D'AGRO-ALIMENTAIRE</option>
+                                        
+                                        <option > EHTP- ECOLE HASSANIA DES TRAVAUX PUBLICS</option>
+                                        
+                                        <option > EMI - ECOLE MOHAMMEDIA DES INGENIEURS</option>
+                                        
+                                        <option > ECOLE MAROCAINE DES SCIENCES ET D'INFORMATION  </option>
+                                        
+                                        <option > ECOLE MAROCAINE DE COMMERCE ET DE GESTION AGADIR</option>
+                                        
+                                        <option> ECOLE MAROCAINE DE COMMERCE ET DE GESTION EL JADIDA</option>
+                                        
+                                        <option > ECOLE MAROCAINE DE COMMERCE ET DE GESTION FES</option>
+                                        
+                                        <option > ECOLE MAROCAINE DE COMMERCE ET DE GESTION KENITRA</option>
+                                        
+                                        <option > ECOLE MAROCAINE DE COMMERCE ET DE GESTION MARRAKECH</option>
+                                        
+                                        <option > ECOLE MAROCAINE DE COMMERCE ET DE GESTION - OUJDA</option>
+                                        
+                                        <option > ENCG ECOLE MAROCAINE DE COMMERCE ET DE GESTION - SETTAT</option>
+                                        
+                                        <option > ENCGECOLE MAROCAINE DE COMMERCE ET DE GESTION TANGER</option>
+                                        
+                                        <option > ENIM - ECOLE NATIONALE DE L'IDUSTRIE MINERALE</option>
+                                        
+                                        <option > ECOLE NATIONALE DES SCIENCES APPLIQUEES AGADIR</option>
+                                        
+                                        <option > ECOLE NATIONALE DES SCIENCES APPLIQUEES - Marrakech</option>
+                                        
+                                        <option > ECOLE NATIONALE DES SCIENCES APPLIQUEES - SAFI</option>
+                                        
+                                        <option > ECOLE NATIONALE DES SCIENCES APPLIQUEES FES</option>
+                                        
+                                        <option > ECOLE NATIONALE DES SCIENCES APPLIQUEES Kenitra</option>
+                                        
+                                        <option > ECOLE NATIONALE DES SCIENCES APPLIQUEES KHOURIBGA</option>
+                                        
+                                        <option > ECOLE NATIONALE DES SCIENCES APPLIQUEES OUJDA</option>
+                                        
+                                        <option > ECOLE NATIONALE DES SCIENCES APPLIQUEES TANGER</option>
+                                        
+                                        <option > ENSAM - ECOLE NATIONALE SUPERIEURE D'ARTS ET METERS MEKNES</option>
+                                        
+                                        <option > ENSEM - ECOLE NATIONALE SUPERIEURE D'ELECTRICITE ET DE MECANIQUE</option>
+                                        
+                                        <option > ECOLE NORMALE SUPERIEUR DE L'ENSEIGNEMENT TECHNIQUES  MOHAMMEDIA</option>
+                                        
+                                        <option > ECOLE NORMALE SUPERIEUR DE L'ENSEIGNEMENT TECHNIQUES Rabat</option>
+                                        
+                                        <option > ECOLE NATIONAL SUPEIUR D'INFORMATIQUE ET D'ANALYSE DES SYSTEMES</option>
+                                        
+                                        <option > ECOLE SUPERIEURE DE TECHNOLOGIE  AGADIR</option>
+                                        
+                                        <option > ECOLE SUPERIEURE DE TECHNOLOGIE BERRECHID</option>
+                                        
+                                        <option > ECOLE SUPERIEURE DE TECHNOLOGIE CASA</option>
+                                        
+                                        <option > ECOLE SUPERIEURE DE TECHNOLOGIE ESSAOUIRA</option>
+                                        
+                                        <option > ECOLE SUPERIEURE DE TECHNOLOGIE FES</option>
+                                        
+                                        <option > ECOLE SUPERIEURE DE TECHNOLOGIE MEKNES</option>
+                                        
+                                        <option > ECOLE SUPERIEURE DE TECHNOLOGIE OUJDA</option>
+                                        
+                                        <option > ECOLE SUPERIEURE DE TECHNOLOGIE SAFI</option>
+                                        
+                                        <option > FACULTE DE DROIT CASABLANCA</option>
+                                        
+                                        <option > FACULTE DE DROIT MOHAMMADIA</option>
+                                        
+                                        <option > FACULTE DES LETTRES ET DES SCIENCES HUMAINES MOHAMMEDIA </option>
+                                        
+                                        <option > FACULTE DES SCIENCES AGADIR</option>
+                                        
+                                        <option > FACULTE DES SCIENCES AIN CHOCK</option>
+                                        
+                                        <option > FACULTE DES SCIENCES BEN M'SIK CASABLANCA</option>
+                                        
+                                        <option > FACULTE DES SCIENCES DE KENITRA</option>
+                                        
+                                        <option > FACULTE DES SCIENCES DE RABAT</option>
+                                        
+                                        <option> FACULTE DES SCIENCES DE TETOUAN </option>
+                                        
+                                        <option > FACULTE DES SCIENCES DHAR  EL MEHRAZ  FES</option>
+                                        
+                                        <option > FACULTE DES SCIENCES ECONOMIQUES JURIDIQUES ET SOCIALES  FES</option>
+                                        
+                                        <option > FACULTE DES SCIENCES ECONOMIQUES JURIDIQUES ET SOCIALES HASSAN II</option>
+                                        
+                                        <option > FACULTE DES SCIENCES ECONOMIQUES JURIDIQUES ET SOCIALES OUJDA</option>
+                                        
+                                        <option > FACULTE DES SCIENCES ECONOMIQUES JURIDIQUES ET SOCIALES RABAT</option>
+                                        
+                                        <option > FACULTE DES SCIENCES ECONOMIQUES DE FES</option>
+                                        
+                                        <option > FACULTE DES SCIENCES ECONOMIQUES DE KENITRA</option>
+                                        
+                                        <option > FACULTE DES SCIENCES D'EL JADIDA</option>
+                                        
+                                        <option > FACULTE DES SCIENCES IBN TOFAIL DE KENITRA</option>
+                                        
+                                        <option > FACULTE DES SCIENCES  JURIDIQUES D'AGADIR</option>
+                                        
+                                        <option > FACULTE DES SCIENCES TECHNIQUES DE SETTAT</option>
+                                        
+                                        <option > FACULTE DES SCIENCES TECHNIQUES DE TANGER</option>
+                                        
+                                        <option > FACULTE HASSAN I DE SETTAT</option>
+                                        
+                                        <option > FACULTE POLYDISCIPLINAIRE DE BENI MELLAL</option>
+                                        
+                                        <option > FACULTE POLYDISCIPLINAIRE DE KHOURIBGA</option>
+                                        
+                                        <option > FACULTE POLYDISCIPLINAIRE DE TETOUAN</option>
+                                        
+                                        <option > FACULTE POLYDISCIPLINAIRE D'EL JADIDA</option>
+                                        
+                                        <option > FACULTE DES SCIENCES ET TECHNIQUES  BENI MELLAL</option>
+                                        
+                                        <option > FACULTE DES SCIENCES ET TECHNIQUES FES</option>
+                                        
+                                        <option > FACULTE DES SCIENCES ET TECHNIQUES MARRAKECH</option>
+                                        
+                                        <option > FACULTE DES SCIENCES ET TECHNIQUES MOHAMMADIA</option>
+                                        
+                                        <option > INSTITUT DES HAUTES ETUDES DE MANAGEMENT - HEM</option>
+                                        
+                                        <option > INSTITUT AGRONOMIQUE ET VITERINAIRE HASSAN II Rabat</option>
+                                        
+                                        <option > INSTITUT DE GESTION APPLIQUEES</option>
+                                        
+                                        <option > INPT - INSITUT NATIONAL DES POSTES ET DE TELECOMMUNICATION</option>
+                                        
+                                        <option > INSEA - INSTITUT NATIONAL DES STATISTIQUES ET ECONOMIE APPLIQUES</option>
+                                        
+                                        <option > INSTITUT AGRONOMIQUE ET VETERINAIRE HASSAN II</option>
+                                        
+                                        <option > INSTITUT DE FORMATION TECHNIQUE DE MOHAMMADIA</option>
+                                        
+                                        <option > INSTITUT POLYTECHNIQUE DE CASABLANCA</option>
+                                        
+                                        <option > ISCAE - INSTITUT SUPERIEUR DE COMMERCE ET D'ADMINISTRATION D'ENREPRISE</option>
+                                        
+                                        <option > INSTITUT SUPERIEUR DE TECHNOLOGIE APPLIQUEE  Al Adarissa Fès</option>
+                                        
+                                        <option > INSTITUT SUPERIEUR DE TECHNOLOGIE APPLIQUEE - El Hank Casa</option>
+                                        
+                                        <option > INSTITUT SUPERIEUR DE TECHNOLOGIE APPLIQUEE - Fès</option>
+                                        
+                                        <option > INSTITUT SUPERIEUR DE TECHNOLOGIE APPLIQUEE  Mohammedia</option>
+                                        
+                                        <option > INSTITUT SUPERIEUR DE TECHNOLOGIE APPLIQUEE - Sidi Mâarouf</option>
+                                        
+                                        <option > INSTITUT SUPERIEUR DE TECHNOLOGIE APPLIQUEE Agadir</option>
+                                        
+                                        <option > INSTITUT SUPERIEUR DE TECHNOLOGIE APPLIQUEE Ben M'Sik Casa</option>
+                                        
+                                        <option > INSTITUT SUPERIEUR DE TECHNOLOGIE APPLIQUEE Ben Slimane</option>
+                                        
+                                        <option > INSTITUT SUPERIEUR DE TECHNOLOGIE APPLIQUEE Beni Mellal</option>
+                                        
+                                        <option > INSTITUT SUPERIEUR DE TECHNOLOGIE APPLIQUEE BERKANE</option>
+                                        
+                                        <option > INSTITUT SUPERIEUR DE TECHNOLOGIE APPLIQUEE Bouarfa</option>
+                                        
+                                        <option > INSTITUT SUPERIEUR DE TECHNOLOGIE APPLIQUEE Bouznika</option>
+                                        
+                                        <option > INSTITUT SUPERIEUR DE TECHNOLOGIE APPLIQUEE Casa</option>
+                                        
+                                        <option > INSTITUT SUPERIEUR DE TECHNOLOGIE APPLIQUEE El Jadida</option>
+                                        
+                                        <option > INSTITUT SUPERIEUR DE TECHNOLOGIE APPLIQUEE Hay Hassani Casa</option>
+                                        
+                                        <option > INSTITUT SUPERIEUR DE TECHNOLOGIE APPLIQUEE Jerada</option>
+                                        
+                                        <option > INSTITUT SUPERIEUR DE TECHNOLOGIE APPLIQUEE Kenitra</option>
+                                        
+                                        <option > INSTITUT SUPERIEUR DE TECHNOLOGIE APPLIQUEE khemisset</option>
+                                        
+                                        <option > INSTITUT SUPERIEUR DE TECHNOLOGIE APPLIQUEE Khouribga</option>
+                                        
+                                        <option > INSTITUT SUPERIEUR DE TECHNOLOGIE APPLIQUEE Lâayoune</option>
+                                        
+                                        <option > INSTITUT SUPERIEUR DE TECHNOLOGIE APPLIQUEE Lazaret Oujda</option>
+                                        
+                                        <option > INSTITUT SUPERIEUR DE TECHNOLOGIE APPLIQUEE Mâamora Kenitra</option>
+                                        
+                                        <option > INSTITUT SUPERIEUR DE TECHNOLOGIE APPLIQUEE Marrakech</option>
+                                        
+                                        <option > INSTITUT SUPERIEUR DE TECHNOLOGIE APPLIQUEE Meknes</option>
+                                        
+                                        <option > INSTITUT SUPERIEUR DE TECHNOLOGIE APPLIQUEE Mohammedia</option>
+                                        
+                                        <option > ISTA NTIC 2 Sidi Maarouf Casa</option>
+                                        
+                                        <option > INSTITUT SUPERIEUR DE TECHNOLOGIE APPLIQUEE Polo Casa</option>
+                                        
+                                        <option > INSTITUT SUPERIEUR DE TECHNOLOGIE APPLIQUEE Roches Noires Casa</option>
+                                        
+                                        <option > INSTITUT SUPERIEUR DE TECHNOLOGIE APPLIQUEE Route Immouzzer Fès</option>
+                                        
+                                        <option > INSTITUT SUPERIEUR DE TECHNOLOGIE APPLIQUEE Safi</option>
+                                        
+                                        <option > INSTITUT SUPERIEUR DE TECHNOLOGIE APPLIQUEE Sefrou</option>
+                                        
+                                        <option > INSTITUT SUPERIEUR DE TECHNOLOGIE APPLIQUEE Sidi Bernoussi - Casa</option>
+                                        
+                                        <option > INSTITUT SUPERIEUR DE TECHNOLOGIE APPLIQUEE Sidi kacem</option>
+                                        
+                                        <option > INSTITUT SUPERIEUR DE TECHNOLOGIE APPLIQUEE Sidi Mâafa Oujda</option>
+                                        
+                                        <option > INSTITUT SUPERIEUR DE TECHNOLOGIE APPLIQUEE Sidi Moumen Casa</option>
+                                        
+                                        <option > INSTITUT SUPERIEUR DE TECHNOLOGIE APPLIQUEE Taza</option>
+                                        
+                                        <option > INSTITUT  DE TECHNOLOGIE APPLIQUEE - Hay Hassani Casa</option>
+                                        
+                                        <option > INSTITUT  DE TECHNOLOGIE APPLIQUEE  Jerada</option>
+                                        
+                                        <option > INSTITUT  DE TECHNOLOGIE APPLIQUEE Al Hoceima</option>
+                                        
+                                        <option > INSTITUT  DE TECHNOLOGIE APPLIQUEE Azilal</option>
+                                        
+                                        <option > INSTITUT  DE TECHNOLOGIE APPLIQUEE Bouarfa</option>
+                                        
+                                        <option > INSTITUT  DE TECHNOLOGIE APPLIQUEE Hay Mohammadie Casa</option>
+                                        
+                                        <option > INSTITUT  DE TECHNOLOGIE APPLIQUEE Inara Casa</option>
+                                        
+                                        <option > INSTITUT  DE TECHNOLOGIE APPLIQUEE Kenitra</option>
+                                        
+                                        <option > INSTITUT  DE TECHNOLOGIE APPLIQUEE Lâayoune</option>
+                                        
+                                        <option > INSTITUT  DE TECHNOLOGIE APPLIQUEE Marrakech</option>
+                                        
+                                        <option > INSTITUT  DE TECHNOLOGIE APPLIQUEE Moulay Rachid - Casa</option>
+                                        
+                                        <option > INSTITUT  DE TECHNOLOGIE APPLIQUEE Oujda</option>
+                                        
+                                        <option > INSTITUT  DE TECHNOLOGIE APPLIQUEE Roches Noires Casa</option>
+                                        
+                                        <option > LYCEE AL KHAWARIZMY</option>
+                                        
+                                        <option > LYCEE ALKHANSAA</option>
+                                        
+                                        <option > OFPPT</option>
+                                        
+                                        <option > UNIVERSITE ABDELMALEK ESSAADI</option>
+                                        
+                                        <option > UNIVERSITE AL AKHAWAYNE</option>
+                                        
+                                        <option > ENSMR-Ecole Nationale Supérieur des Mines de Rabat</option>
+                                        
+                                        <option value="">AUTRE </option>
+                                </select>
+                       </div>
+                       <br>
+                       <div class="combo-box"> 
+                            <label for="nom">Niveau d'&eacute;tude</label>
+                                <select name="niveau_etu" class="select-box">
+                                        <option value=""> </option>
+                                        <option value="inf bac"> bac</option>
+                                        <option value="bac">bac</option>
+                                        <option value="bac+1">bac+1 </option>
+                                        <option value="bac+2">bac+2 </option>
+                                        <option value="bac+3">bac+3 </option>
+                                        <option value="bac+4">bac+4 </option>
+                                        <option value="bac+5">bac+5 </option>
+                                </select>
+                       </div>
+                       <br>
+                       <div class="combo-box"> 
+                            <label for="nom">Domaine</label>
+                                <select name="domaine" class="select-box">
+                                        <option value=""> </option>
+                                        
+                                        <option >ACHAT ET STOCK 
+                                        </option>
+                                        
+                                        <option >ADMINISTRATION ET LOGISTIQUE 
+                                        </option>
+                                        
+                                        <option >COMMERCIAL 
+                                        </option>
+                                        
+                                        <option >DISTRIBUTION 
+                                        </option>
+                                        
+                                        <option >FINANCES 
+                                        </option>
+                                        
+                                        <option >FORMATION 
+                                        </option>
+                                        
+                                        <option >GENIE CIVIL 
+                                        </option>
+                                        
+                                        <option >INFORMATIQUE 
+                                        </option>
+                                        
+                                        <option >JURIDIQUE 
+                                        </option>
+                                        
+                                        <option >MEDICALE 
+                                        </option>
+                                        
+                                        <option >PLANIFICATION 
+                                        </option>
+                                        
+                                        <option >PRODUCTION 
+                                        </option>
+                                        
+                                        <option >RESSOURCES HUMAINES 
+                                        </option>
+                                        
+                                        <option >TRANSPORT 
+                                        </option>
+                                        
+                                        <option >ENVIRONNEMENT 
+                                        </option>
+                                        
+                                        <option >QUALITE 
+                                        </option>
+                                        
+                                        <option  >AUTRE</option>
+                                      </select>
+                                </select>
+                        </div>
+                        <br>
+                        <div class="combo-box"> 
+                             <label for="nom">Specialit&eacute;  :</label>
+                                <select name="specialite" class="select-box">
+                                    <option value=""> </option>
+        
+                                    <option > Achat et Approvisionnement</option>
+                                    
+                                    <option > Magasin et Stocks</option>
+                                    
+                                    <option > Communication et Publication</option>
+                                    
+                                    <option > Conduite de V&eacute;hicules et Engins</option>
+                                    
+                                    <option > Gestion Administrative</option>
+                                    
+                                    <option > Secr&eacute;tariat et Accueil</option>
+                                    
+                                    <option > Commercial</option>
+                                    
+                                    <option > Comptages</option>
+                                    
+                                    <option > Contr&ocirc;le Commande R&eacute;seaux Distribution</option>
+                                    
+                                    <option > &Eacute;tudes et Travaux</option>
+                                    
+                                    <option > Lignes  MTetBT</option>
+                                    
+                                    <option > Postes MT/BT et HT/MT</option>
+                                    
+                                    <option > T&eacute;l&eacute;conduite R&eacute;seaux Distribution</option>
+                                    
+                                    <option > TST Lignes MT</option>
+                                    
+                                    <option > Comptabilit&eacute;</option>
+                                    
+                                    <option > Formation</option>
+                                    
+                                    <option > B&acirc;timent</option>
+                                    
+                                    <option > &Eacute;tudes et Contr&ocirc;le des Travaux</option>
+                                    
+                                    <option > Exploitation et Support</option>
+                                    
+                                    <option > Syst&egrave;me d'Information</option>
+                                    
+                                    <option > Juridique</option>
+                                    
+                                    <option > M&eacute;dico-Social</option>
+                                    
+                                    <option > Param&eacute;dical</option>
+                                    
+                                    <option > Planification des R&eacute;seaux</option>
+                                    
+                                    <option > Chimie</option>
+                                    
+                                    <option > Electrom&eacute;canique</option>
+                                    
+                                    <option > Exploitation Production</option>
+                                    
+                                    <option > Isolation Thermique</option>
+                                    
+                                    <option > M&eacute;tallurgie</option>
+                                    
+                                    <option > R&eacute;gulation et Automatisme</option>
+                                    
+                                    <option > Gestion Ressources Humaines</option>
+                                    
+                                    <option > Conduite du Système &Eacute;lectrique</option>
+                                    
+                                    <option > Contr&ocirc;le Commande R&eacute;seaux Transport</option>
+                                    
+                                    <option > Exploitation R&eacute;seaux Transport</option>
+                                    
+                                    <option > Lignes THT et HT</option>
+                                    
+                                    <option > Postes THT-HT</option>
+                                    
+                                    <option > T&eacute;l&eacute;communication et T&eacute;l&eacute;conduite</option>
+                                    
+                                    <option > TST THT et HT</option>
+                                    
+                                    <option > Environnement</option>
+                                    
+                                    <option > Qualit&eacute;</option>
+                                    
+                                    <option value="">AUTRE </option>
+                                </select>
+                      </div>
+                      <br>
+                      <div class="combo-box"> 
+                           <label for="nom">Type du stage  :</label>
+                                <select name="type_sta" class="select-box">
+                                          <option value=""></option>
+                                          <option value="PFE">PFE</option>
+                                          <option value="Technique">Stage technique </option>
+                                          <option value="Ouvrier">Stage ouvrier</option>
+                                </select>
+                      </div>
+                      <br>
+                      <div class="combo-box"> 
+                           <label for="nom">Service  :</label>
+                                <select name="Service" class="select-box">
+                                            <option value=""></option>
+                                            <option value="technique">Service technique</option>
+                                            <option value="Technique">Service QSSE </option>
+                                            <option value="Ouvrier">Service Navigation A&eacute;rienne</option>
+                                            <option value="Ouvrier">Service Exploitation</option>
+                                </select>
+                      </div>
+                      <br>
+                      <div class="input-box"> 
+                           <label for="nom">P&eacute;riode  :</label> 
+                                de:
+                               <input  name="datedebut" type="date" id="email5"><br>
+                                <br>au: 
+                               <input name="datefin" type="date" id="email6">
+                      </div>
+                      <br>
+                      <div class="img-btn"> 
+                           <label for="nom">Recto de la carte Nationale  :</label>
+                           <input type = "file" name = "frontcin" accept = "image">
+                      </div>
+                      <br>
+                      <div class="img-btn"> 
+                           <label for="nom">Verso de la carte Nationale  :</label>
+                           <input type = "file" name = "backcin" accept = "image">
+                      </div>
+                      <br>
+                      <div class="img-btn"> 
+                        <label for="nom">Photo  :</label>
+                        <input type = "file" name = "photo" accept = "image">
+                        </div>
+                        <br>
+                        <div class="img-btn"> 
+                            <label for="nom">Demande de stage  :</label>
+                            <input type = "file" name = "demande" accept = ".pdf">
+                        </div>
+                        <br>
+                        <div class="img-btn"> 
+                        <label for="nom">Certificat de scolarit&eacute;  :</label>
+                        <input type = "file" name = "Certificat" accept = ".pdf">
+                        </div>
+                        <br>
+                        <div class="img-btn"> 
+                            <label for="nom">Attestation d'assurance  :</label>
+                            <input type = "file" name = "assurance" accept = ".pdf">
+                            </div>
+                      <br>
+                      <div class="img-btn"> 
+                            <label for="nom">CV  :</label>
+                            <input type = "file" name = "cv" accept = ".pdf">
+                      </div>
+                      <br>
+                      <div class="img-btn"> 
+                            <label for="nom">Fiche anthropom&eacute;trique  :</label>
+                            <input type = "file" name = "fa" accept = ".pdf">
+                      </div>
+                      <br><br>
+                      <div class="button-container">
+                        <td><input type="submit" value="Envoyer" name="send"></td><br>
+                    </div>
+                    
+                      <div class="button-container">
+                          <td><input type="reset" value="Réinitialiser" name="reset"></td>
+                        </div> 
+                      <br>
+                      <div class="button-container">
+                      <button type="button" onclick="cancelForm()">Annuler</button>
+                    </div>
+                
+              </div>
+        </div>
+      </div>
+    </form>
+    
+    <?php
+    if(isset($_POST['send'])){
+    // Step 1: Create a connection to the database
+    $servername = "localhost";
+    $username = "root";
+    $password = "";
+    $dbname = "onda";                
+    // Create a connection
+    $conn = mysqli_connect($servername, $username, $password, $dbname);
+    
+    
+    
+    // Check connection
+    if (!$conn) {
+        die("Connection failed: " . mysqli_connect_error());
+    }
+    
+    // Step 2: Retrieve the information entered in the form fields
+    $nom = $_POST['nom'];
+    $prenom = $_POST['prenom'];
+    $cin = $_POST['cin'];
+    $dn = $_POST['dn'];
+    $pays = $_POST['pays'];
+    $ville = $_POST['ville'];
+    $tel = $_POST['tel'];
+    $email = $_POST['email'];
+    $nomecole = $_POST['nomecole'];
+    $niveau_etu = $_POST['niveau_etu'];
+    $domaine = $_POST['domaine'];
+    $specialite = $_POST['specialite'];
+    $type_sta = $_POST['type_sta'];
+    $Service = $_POST['Service'];
+    $datedebut = $_POST['datedebut'];
+    $datefin = $_POST['datefin'];
+    
+
+    // Step 3: Retrieve the uploaded files and move them to a directory on the server
+    
+    $frontcin = "front_cin/" . basename($_FILES["frontcin"]["name"]);
+    $backcin = "back_cin/" . basename($_FILES["backcin"]["name"]);
+    $photo = "photo/" . basename($_FILES["photo"]["name"]);
+    $demande = "demande de stage/" . basename($_FILES["demande"]["name"]);
+    $Certificat = "certificat de scolare/" . basename($_FILES["Certificat"]["name"]);
+    $assurance = "assurance d'assurance/" . basename($_FILES["assurance"]["name"]);
+    $cv = "cv/". basename($_FILES["cv"]["name"]);
+    $fa = "Fiche anthropometrique/" . basename($_FILES["fa"]["name"]);
+
+
+    move_uploaded_file($_FILES["frontcin"]["tmp_name"], $frontcin);
+    move_uploaded_file($_FILES["backcin"]["tmp_name"], $backcin);
+    move_uploaded_file($_FILES["photo"]["tmp_name"], $photo);
+    move_uploaded_file($_FILES["demande"]["tmp_name"], $demande);
+    move_uploaded_file($_FILES["Certificat"]["tmp_name"], $Certificat);
+    move_uploaded_file($_FILES["assurance"]["tmp_name"], $assurance);
+    move_uploaded_file($_FILES["cv"]["tmp_name"], $cv);
+    move_uploaded_file($_FILES["fa"]["tmp_name"], $fa);
+    
+        
+    // Step 4: Prepare an SQL statement to insert the information into the database
+    $sql = 'INSERT INTO Stagier (nom, prenom,CIN,Date_de_naissance, Pays,Ville, tele, email,
+     Nom_de_letablissement,Niveau_d_etude, Domaine,Specialite,Type_du_stage, Service_stg,date_debut, 
+     date_fin,front_cin,back_cin, photo, demande_de_stage, certificat_de_scolarite, attestation_d_assurance, 
+     cv, fiche_anthropometrique)
+            VALUES ("'.$nom.'", "'.$prenom.'","'.$cin.'",
+            "'.$dn.'","'.$pays.'","'.$ville.'","'.$tel.'",
+            " '.$email.'"," '.$nomecole.'","'.$niveau_etu.'
+            ", "'.$domaine.'","'.$specialite.'","'.$type_sta.
+            '", "'.$Service.'","'.$datedebut.'","'.$datefin.'
+            ","'.$frontcin.'","'.$backcin.'", "'.$photo.'", "
+            '.$demande.'","'.$Certificat.'","'.$assurance.'",
+            "'.$cv.'","'.$fa.'")';
+
+
+    // Step 5: Execute the SQL statement
+    if (mysqli_query($conn, $sql)) {
+        echo "Nouvel enregistrement créé avec succès";
+    } else {
+        echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+    }
+}
+
+        ?>
+        
+    </div>
+  
+    
+    <script>
+      function showFormy() {
+        var form = document.getElementById("myFormy");
+        form.style.display = "block"; /* Show the form */
+      }
+      function cancelForm() {
+			var form = document.getElementById("myFormy");
+			form.style.display = "none"; /* Hide the form */
+			window.location.href = "onda.php"; /* Navigate to the home page */
+		}
+    </script>
+
+    
+    <!-- features sectin ends -->
+
+
+    <!-- downloads section starts  -->
+
+    
+        
+        <div class="box-container">
+            <div class="box">
+                <a href="#"><i class="fa fa-plug"></i>
+
+                <h3>sevices Technique </h3>
+                <p>Le Service Technique de l'Office National des Aéroports est responsable de la maintenance, de la sécurité et de l'efficacité des installations aéroportuaires.</p>
+                <a  class="all-btn"><button onclick="showFormy()">Postuler</button></a>
+                
+            </div>
+
+            <div class="box">
+                <a href="#"><i class="fa fa-plane"></i>
+
+                <h3>sevices Navigation Aérienne</h3>
+                <p>La Service Navigation Aérienne de l'Office National des Aéroports est responsable de la gestion de la circulation aérienne et de la sécurité des vols à travers l'espace aérien national. </p>
+                <a  class="all-btn"><button onclick="showFormy()">Postuler</button></a>
+            </div>
+
+            <div class="box">
+                <a href="#"><i class="fa fa-columns"></i>
+
+                <h3>sevices Exploitation</h3>
+                <p>La Service Exploitation de l'Office National des Aéroports est responsable de la gestion et de l'exploitation quotidienne de l'aéroport.</p>
+                <a  class="all-btn"><button onclick="showFormy()">Postuler</button></a>
+            </div>
+            <div class="box">
+                <a href="#"><i class="fa fa-leaf"></i>
+
+                <h3>sevices  QSSE </h3>
+                <p>La Service QSSE (Qualité, Sécurité, Santé et Environnement) de l'Office National des Aéroports est chargée de la mise en œuvre et de la gestion des politiques et des programmes de gestion de la qualité, de la sécurité, de la santé et de l'environnement pour l'ensemble de l'aéroport.</p>
+                <a  class="all-btn"><button onclick="showFormy()">Postuler</button></a>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- downloads section ends -->
+
+
+
+    <!-- footer section starts  -->
+
+   <section class="footer" id="footer">
+       <div class="box-container">
+           <div class="box">
+               <h3>Liens directs</h3>
+               <a href="#home"><i class="fas fa-chevron-right"></i>Accueil</a>
+               <a href="#about"><i class="fas fa-chevron-right"></i>À propos</a>
+               <a href="#Services"><i class="fas fa-chevron-right"></i>Sevices</a>
+               <a href="#footer"><i class="fas fa-chevron-right"></i>contact</a>
+            </div>
+            
+            
+            <div class="box">
+                <h3>services</h3>
+                <a href="#"><i class="fas fa-chevron-right"></i>Service Technique</a>
+                <a href="#"><i class="fas fa-chevron-right"></i>Service Navigation Aérienne</a>
+                <a href="#"><i class="fas fa-chevron-right"></i>Service Exploitation</a>
+                <a href="#"><i class="fas fa-chevron-right"></i>Service QSSE</a>
+                
+           </div>
+
+           <div class="box">
+               <h3>contact info</h3>
+               <a href="#"><i class="fas fa-phone"></i>+212 5288-93791</a>
+               
+               <a href="#"><i class="fas fa-envelope"></i>communication@onda.ma</a>
+               
+               <a href="https://www.google.com/maps/place/Laayoune+Hassan+I+International+Airport/@27.1487594,-13.2253457,15z/data=!4m6!3m5!1s0xc37725ec54c5d29:0x74be4c2103f71b9b!8m2!3d27.1487594!4d-13.2253457!16s%2Fm%2F0281b8p" target="_blank"><i class="fas fa-map-marker-alt"></i>4QXF+GV2, Laayoune 70000</a>
+           </div>
+
+           <div class="box">
+               <h3>follow us</h3>
+               <a href="https://www.facebook.com/OFFICENATIONALDESAEROPORTS/" target="_blank"><i class="fab fa-facebook-f"></i>facebook</a
+                ><a href="https://twitter.com/ondaofficiel" target="_blank"><i class="fab fa-twitter"></i>Twitter</a> 
+               <a href="https://www.instagram.com/ondaeroports/" target="_blank"><i class="fab fa-instagram"></i>instagram</a>
+               <a href="https://www.youtube.com/Office%20National%20Des%20A%C3%A9roports" target="_blank"><i class="fab fa-youtube"></i>Youtube</a>
+               
+               
+           </div>
+       </div>
+
+
+       
+   </section>
+
+    <!-- footer section ends -->
+
+
+    <script src="js/main.js">
+      let menu = document.querySelector("#menu-btn")
+let navbar = document.querySelector(".navbar")
+
+
+menu.onclick = () =>{
+    menu.classList.toggle("fa-times")
+    navbar.classList.toggle("active")
+}
+
+
+window.onscroll = () =>{
+    menu.classList.remove("fa-times")
+    navbar.classList.remove("active")
+}
+    </script>
+</body>
+
+</html>
